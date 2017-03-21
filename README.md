@@ -1,2 +1,2 @@
-# NetArt
-Net Art 
+#NetArt
+Net Art
