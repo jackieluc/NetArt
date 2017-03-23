@@ -7,6 +7,7 @@ var r;
 var dt;
 var index;
 var sandboxEnabled;
+var instructions;
 
 var coefficients = [
     [6, 14],
@@ -26,6 +27,7 @@ var coefficients = [
 
 function setup() {
     sandboxEnabled = false;
+    disableInstructions = false;
     
     // setup all the images
     for (var i = 1; i < 4; i++) {
@@ -99,7 +101,7 @@ function plot_parametric(c1, c2) {
 function setDefaultImages() {
     if (imageIndex == 1) {
         index = 8;
-        r = 200;
+        r = 260;
     }
     else if (imageIndex == 2) {
         index = 2;
@@ -114,10 +116,10 @@ function setDefaultImages() {
 // adjust canvas size of drawings when the up or down arrow is pressed
 function adjustDrawingSize() {
     if (keyIsDown(UP_ARROW)) {
-        r *= 1.5;
+        r *= 1.3;
     }
     else if (keyIsDown(DOWN_ARROW)) {
-        r /= 1.5;
+        r /= 1.3;
     }
 }
 
@@ -126,6 +128,18 @@ function keyPressed() {
     // toggle sandbox mode
     if (keyCode == CONTROL) {
         sandboxEnabled = !sandboxEnabled;
+        instructions = !instructions;
+        
+        if (instructions) {
+            $("#controls").append("<p class=\"sandbox-mode\">Press <b>Up Arrow</b> to increase the drawing\'s size</p> <p class=\"sandbox-mode\">Press <b>Down Arrow</b> to decrease the drawing's size</p> <p class=\"sandbox-mode\">Press <b>Right Arrow</b> to go to the next drawing</p> <p class=\"sandbox-mode\">Press <b>Left Arrow</b> to go to the previous drawing</p>")
+            $(".sandbox-mode").css("visibility", "visible");
+            
+        }
+        else {
+            $(".sandbox-mode").css("visibility", "hidden");
+            $(".sandbox-mode").remove();
+        }
+            
     }
     
     // sandbox mode, user is able to go through the different results

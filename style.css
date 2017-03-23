@@ -17,3 +17,13 @@ body {
 img {
     z-index: -1;    
 }
+
+#controls {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+}
+
+.sandbox-mode {
+    visibility: hidden;
+}
