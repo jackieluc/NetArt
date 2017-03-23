@@ -1,3 +1,5 @@
+p5.disableFriendlyErrors = true;
+
 var images = [];
 var imageIndex;
 var canvas;
@@ -27,7 +29,7 @@ function setup() {
     
     // setup all the images
     for (var i = 1; i < 4; i++) {
-        images[i] = createImg("../images/image" + i + ".png");
+        images[i] = createImg("images/image" + i + ".png");
         images[i].size(1100, 1100);
         images[i].hide();
     }
@@ -62,7 +64,7 @@ function plot_parametric(c1, c2) {
     var y1;  
     
     // display the image at a specified location
-    image(images[imageIndex], innerWidth / 100 + 17, height / 30);
+    image(images[imageIndex], width / 30, height / 100);
     
     // if sandbox is enabled, user can adjust the drawing size
     if (sandboxEnabled)
@@ -97,7 +99,7 @@ function plot_parametric(c1, c2) {
 function setDefaultImages() {
     if (imageIndex == 1) {
         index = 8;
-        r = 242;
+        r = 200;
     }
     else if (imageIndex == 2) {
         index = 2;
@@ -112,10 +114,10 @@ function setDefaultImages() {
 // adjust canvas size of drawings when the up or down arrow is pressed
 function adjustDrawingSize() {
     if (keyIsDown(UP_ARROW)) {
-        r *= 1.1;
+        r *= 1.5;
     }
     else if (keyIsDown(DOWN_ARROW)) {
-        r /= 1.1;
+        r /= 1.5;
     }
 }
 
