@@ -4,6 +4,8 @@ var canvas;
 var r;
 var dt;
 var index;
+var sandboxEnabled;
+
 var coefficients = [
     [6, 14],
     [10, 17],
@@ -21,13 +23,16 @@ var coefficients = [
 ];
 
 function setup() {
-    for (var i = 1; i < 3; i++) {
-        images[i] = createImg("../images/image" + i + ".jpg");
-//        images[i].position(width, height / 4);
+    sandboxEnabled = false;
+    
+    // setup all the images
+    for (var i = 1; i < 4; i++) {
+        images[i] = createImg("../images/image" + i + ".png");
         images[i].size(1100, 1100);
         images[i].hide();
     }
     
+    // setup the canvas
     canvas = createCanvas(1100, 1100);
 
     // initialize all values
@@ -41,9 +46,14 @@ function setup() {
 }
     
 function draw() {
+    // if sandbox is disabled, draw default images instead
+    if (!sandboxEnabled) 
+        setDefaultImages();
+    
     plot_parametric(coefficients[index][0], coefficients[index][1]);
 }
 
+// main function that plots the parametric equation with two coefficients as parameters
 function plot_parametric(c1, c2) {
     clear();
     var x0;
@@ -51,23 +61,28 @@ function plot_parametric(c1, c2) {
     var y0;
     var y1;  
     
-    image(images[imageIndex], innerWidth / 100 + 17, height / 99);
+    // display the image at a specified location
+    image(images[imageIndex], innerWidth / 100 + 17, height / 30);
     
-    adjustCanvasSize();
+    // if sandbox is enabled, user can adjust the drawing size
+    if (sandboxEnabled)
+        adjustDrawingSize();
     
     // translate the origin point to the center of the screen
     translate(width / 2, height / 2);
   
-//    background(255);
+    // white stroke lines and a thin stroke weight
     stroke(255);
     strokeWeight(2);
     x0 = 0;
     y0 = 0;
-    
+
+    // loop that plots the parametric function, which always looks symmetric
     for(var t = dt; t < TWO_PI; t += dt) {
         x1 = cos(t) + cos(c1 * t) / 2 + sin(c2 * t) / 3;
         y1 = sin(t) + sin(c1 * t) / 2 + cos(c2 * t) / 3;
         
+        // when t = dt, draws an extra undesirable line from centre of canvas to the next (x1, y1)
         if (t > dt)
             line(r * x0, -r * y0, r * x1, -r * y1);
         
@@ -78,8 +93,24 @@ function plot_parametric(c1, c2) {
     fill(0);
 }
 
-// adjust canvas size if the up or down arrow is pressed
-function adjustCanvasSize() {
+// set default images that look visually appealing
+function setDefaultImages() {
+    if (imageIndex == 1) {
+        index = 8;
+        r = 242;
+    }
+    else if (imageIndex == 2) {
+        index = 2;
+        r = 429;
+    }
+    else if (imageIndex == 3) {
+        index = 9; 
+        r = 2384;
+    }
+}
+
+// adjust canvas size of drawings when the up or down arrow is pressed
+function adjustDrawingSize() {
     if (keyIsDown(UP_ARROW)) {
         r *= 1.1;
     }
@@ -88,24 +119,32 @@ function adjustCanvasSize() {
     }
 }
 
-// move onto the next image when a key has been pressed
+// listen to keyboard events
 function keyPressed() {
-    if (keyCode == RIGHT_ARROW) {
-        if(++index == coefficients.length)
-            index = 0;
+    // toggle sandbox mode
+    if (keyCode == CONTROL) {
+        sandboxEnabled = !sandboxEnabled;
     }
-    else if (keyCode == LEFT_ARROW) {
-        if (--index == -1)
-            index = coefficients.length - 1;
+    
+    // sandbox mode, user is able to go through the different results
+    if (sandboxEnabled) {
+        if (keyCode == RIGHT_ARROW) {
+            if(++index == coefficients.length)
+                index = 0;
+        }
+        else if (keyCode == LEFT_ARROW) {
+            if (--index == -1)
+                index = coefficients.length - 1;
+        }
     }
-    else if (key == "e") {
-        textSize(32);
-        text("x = cos(t) + cos(" + coefficients[index][0] + " * t) / 2 + sin(" + coefficients[index][1] + " * t) / 3", 100, 100, 100, 100);
-    }
-    else if (key == 1) {
+    
+    // move to the next image (loops around to the beginning if exceeds length of array)
+    if (key == 1) {
         if (++imageIndex == images.length)
             imageIndex = 1;
     }
+    
+    // move to the previous image (loops around to the end if exceeds beginning index)
     else if (key == 2) {
         if (--imageIndex == 0)
             imageIndex = images.length - 1;
