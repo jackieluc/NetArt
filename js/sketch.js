@@ -139,13 +139,13 @@ function keyPressed() {
     }
     
     // move to the next image (loops around to the beginning if exceeds length of array)
-    if (key == 1) {
+    if (key == 2) {
         if (++imageIndex == images.length)
             imageIndex = 1;
     }
     
     // move to the previous image (loops around to the end if exceeds beginning index)
-    else if (key == 2) {
+    else if (key == 1) {
         if (--imageIndex == 0)
             imageIndex = images.length - 1;
     }
