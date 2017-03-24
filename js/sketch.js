@@ -65,6 +65,9 @@ function plot_parametric(c1, c2) {
     var y0;
     var y1;  
     
+    // update parametric equation display
+    updateEquationDisplay(c1, c2);
+    
     // display the image at a specified location
     image(images[imageIndex], width / 30, height / 100);
     
@@ -95,6 +98,12 @@ function plot_parametric(c1, c2) {
     }
     
     fill(0);
+}
+
+// update the equation display for the user
+function updateEquationDisplay(c1, c2) {
+    $("#x-component").text("x(t) = cos(t) + cos(" + c1 + " * t) / 2 + sin(" + c2 + " * t) / 3");
+    $("#y-component").text("y(t) = sin(t) + sin(" + c1 + " * t) / 2 + cos(" + c2 + " * t) / 3");
 }
 
 // set default images that look visually appealing

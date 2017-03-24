@@ -18,6 +18,12 @@ img {
     z-index: -1;    
 }
 
+#equation {
+    position: absolute;
+    bottom: 0;
+    left: 5px;
+}
+
 #controls {
     position: absolute;
     bottom: 0;
